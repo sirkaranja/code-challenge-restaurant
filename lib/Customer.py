@@ -8,6 +8,7 @@ Base = declarative_base()
 
 #class Customer(populates the table customer)
 class Customer(Base):
+    #declared table name and its attributes 
     __tablename__ = 'customers'
 
     id = Column(Integer, primary_key=True)
@@ -15,16 +16,17 @@ class Customer(Base):
     family_name = Column(String)
     reviews = relationship('Review', back_populates='customer')
 
+    #method to return full name by concatinating given name and family name
     def full_name(self):
         return f"{self.given_name} {self.family_name}"
-
+    #method to give a review based on the restaurant 
     def add_review(self, restaurant, rating):
         review = Review(customer=self, restaurant=restaurant, rating=rating)
         self.reviews.append(review)
 
     def restaurants(self):
         return [review.restaurant for review in self.reviews]
-
+    #method to return the number of reviews given by a particular user.
     def num_reviews(self):
         return len(self.reviews)
 
@@ -46,8 +48,8 @@ class Customer(Base):
 
 #class Restaurant, populates the restaurant table
 class Restaurant(Base):
+      #declared table name and its attributes 
     __tablename__ = 'restaurants'
-
     id = Column(Integer, primary_key=True)
     name = Column(String)
     reviews = relationship('Review', back_populates='restaurant')
@@ -56,7 +58,7 @@ class Restaurant(Base):
     def __init__(self, name):
         self.name = name
 
-
+    #method to return the average rating
     def average_star_rating(self):
         total_ratings = sum(review.rating for review in self.reviews)
         num_reviews = len(self.reviews)
@@ -70,8 +72,9 @@ class Restaurant(Base):
 
 #class review, populates the table review
 class Review(Base):
-    __tablename__ = 'reviews'
 
+      #declared table name and its attributes 
+    __tablename__ = 'reviews'
     id = Column(Integer, primary_key=True)
     customer_id = Column(Integer, ForeignKey('customers.id'))
     restaurant_id = Column(Integer, ForeignKey('restaurants.id'))
@@ -95,12 +98,12 @@ class Review(Base):
             return review
 
 
-engine = create_engine('sqlite:///restaurant.db')
+engine = create_engine('sqlite:///hospitality.db')
 Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 
 
-#test files
+
 
 
 

@@ -5,6 +5,8 @@ from sqlalchemy.orm import sessionmaker, relationship
 Base = declarative_base()
 
 
+
+#class Customer(populates the table customer)
 class Customer(Base):
     __tablename__ = 'customers'
 
@@ -41,6 +43,8 @@ class Customer(Base):
         return customers
 
 
+
+#class Restaurant, populates the restaurant table
 class Restaurant(Base):
     __tablename__ = 'restaurants'
 
@@ -64,6 +68,7 @@ class Restaurant(Base):
         return [review.customer for review in self.reviews]
 
 
+#class review, populates the table review
 class Review(Base):
     __tablename__ = 'reviews'
 
@@ -93,5 +98,12 @@ class Review(Base):
 engine = create_engine('sqlite:///restaurant.db')
 Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
+
+
+#test files
+
+
+
+
 
 
